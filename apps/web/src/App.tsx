@@ -1,12 +1,12 @@
-import { ENGINE_VERSION } from '@ttr/engine';
-import { MAP_NAME } from '@ttr/map-data';
+import { Play } from './screens/Play.js';
+import { Scoring } from './screens/Scoring.js';
+import { Setup } from './screens/Setup.js';
+import { useGameStore } from './state/store.js';
 
 export default function App() {
-  return (
-    <main className="min-h-screen flex flex-col items-center justify-center gap-3 p-8">
-      <h1 className="text-4xl font-bold tracking-tight">Ticket to Ride — Hannover</h1>
-      <p className="text-slate-400">Map: {MAP_NAME}</p>
-      <p className="text-slate-500 text-sm">Engine v{ENGINE_VERSION} — M0 skeleton</p>
-    </main>
-  );
+  const state = useGameStore((s) => s.state);
+
+  if (!state) return <Setup />;
+  if (state.phase === 'finished') return <Scoring state={state} />;
+  return <Play state={state} />;
 }

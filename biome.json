@@ -24,6 +24,12 @@
       "recommended": true,
       "style": {
         "noNonNullAssertion": "warn"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
+      "a11y": {
+        "useKeyWithClickEvents": "off"
       }
     }
   },
