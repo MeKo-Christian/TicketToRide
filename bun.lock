@@ -55,6 +55,9 @@
     "packages/map-data": {
       "name": "@ttr/map-data",
       "version": "0.0.0",
+      "dependencies": {
+        "@ttr/engine": "workspace:*",
+      },
       "devDependencies": {
         "typescript": "^5.6.3",
         "vitest": "^2.1.5",
