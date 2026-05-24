@@ -26,5 +26,17 @@
         "noNonNullAssertion": "warn"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "include": ["**/*.test.ts", "**/*.test.tsx", "**/test-helpers.ts", "**/test-fixtures.ts"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noNonNullAssertion": "off"
+          }
+        }
+      }
+    }
+  ]
 }
