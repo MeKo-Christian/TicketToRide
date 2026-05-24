@@ -51,7 +51,7 @@ const stations: Station[] = [
   { id: 'rethen', name: 'Rethen', x: 590, y: 700 },
 
   // East
-  { id: 'universitaet', name: 'Universität', x: 600, y: 500 },
+  { id: 'med_hochschule', name: 'Medizinische Hochschule', x: 600, y: 500 },
   { id: 'zoo', name: 'Zoo', x: 680, y: 510 },
   { id: 'roderbruch', name: 'Roderbruch', x: 790, y: 500 },
   { id: 'anderten', name: 'Anderten', x: 740, y: 625 },
@@ -177,20 +177,12 @@ const routes: Route[] = [
     line: 9,
   },
   {
-    id: 'haltenhoff-koenigsworth-blue-1',
+    id: 'haltenhoff-steintor-yellow-2',
     a: 'haltenhoff',
-    b: 'koenigsworth',
-    length: 1,
-    color: 'blue',
-    line: 5,
-  },
-  {
-    id: 'haltenhoff-stoecken-gray-4',
-    a: 'haltenhoff',
-    b: 'stoecken',
-    length: 4,
-    color: 'gray',
-    line: 5,
+    b: 'steintor',
+    length: 2,
+    color: 'yellow',
+    line: 11,
   },
   {
     id: 'stoecken-nordhafen-white-2',
@@ -210,23 +202,7 @@ const routes: Route[] = [
     color: 'red',
     line: 10,
   },
-  { id: 'garbsen-ahlem-black-4', a: 'garbsen', b: 'ahlem', length: 4, color: 'black', line: 10 },
-  {
-    id: 'koenigsworth-linden-gray-3',
-    a: 'koenigsworth',
-    b: 'linden',
-    length: 3,
-    color: 'gray',
-    line: 9,
-  },
-  {
-    id: 'markthalle-linden-green-2',
-    a: 'markthalle',
-    b: 'linden',
-    length: 2,
-    color: 'green',
-    line: 3,
-  },
+  { id: 'garbsen-stoecken-black-4', a: 'garbsen', b: 'stoecken', length: 4, color: 'black', line: 4 },
   {
     id: 'linden-wettbergen-blue-4',
     a: 'linden',
@@ -236,6 +212,14 @@ const routes: Route[] = [
     line: 7,
   },
   { id: 'linden-empelde-white-4', a: 'linden', b: 'empelde', length: 4, color: 'white', line: 9 },
+  {
+    id: 'waterloo-linden-green-3',
+    a: 'waterloo',
+    b: 'linden',
+    length: 3,
+    color: 'green',
+    line: 9,
+  },
   {
     id: 'empelde-wettbergen-orange-2',
     a: 'empelde',
@@ -259,16 +243,16 @@ const routes: Route[] = [
 
   // East
   {
-    id: 'aegi-universitaet-pink-1',
+    id: 'aegi-med_hochschule-pink-1',
     a: 'aegi',
-    b: 'universitaet',
+    b: 'med_hochschule',
     length: 1,
     color: 'pink',
     line: 4,
   },
   {
-    id: 'universitaet-zoo-green-2',
-    a: 'universitaet',
+    id: 'med_hochschule-zoo-green-2',
+    a: 'med_hochschule',
     b: 'zoo',
     length: 2,
     color: 'green',
@@ -313,7 +297,7 @@ const tickets: Ticket[] = [
   { id: 't-bothfeld-aegi', from: 'bothfeld', to: 'aegi', points: 9 },
   { id: 't-markthalle-zoo', from: 'markthalle', to: 'zoo', points: 8 },
   { id: 't-koenigsworth-waterloo', from: 'koenigsworth', to: 'waterloo', points: 8 },
-  { id: 't-universitaet-hbf', from: 'universitaet', to: 'hbf', points: 7 },
+  { id: 't-med_hochschule-hbf', from: 'med_hochschule', to: 'hbf', points: 7 },
   { id: 't-nordhafen-hbf', from: 'nordhafen', to: 'hbf', points: 8 },
 
   // Suburban-to-centre (10-15 pts)
