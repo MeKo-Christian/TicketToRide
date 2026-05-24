@@ -88,21 +88,33 @@ export function Scoring({ state }: ScoringProps) {
             </tr>
           </thead>
           <tbody>
-            {scores.map((s, i) => (
+            {scores.map((s, i) => {
+              const isWinner = s.total === topScore;
+              return (
               <motion.tr
                 key={s.playerId}
                 initial={{ opacity: 0, x: -16 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + i * 0.12 }}
-                className="border-t border-slate-800"
+                className={`border-t border-slate-800 ${
+                  isWinner ? 'bg-amber-500/10' : ''
+                }`}
               >
                 <td className="py-2 flex items-center gap-2">
                   <span className="text-slate-500 w-4">{i + 1}.</span>
                   <span
                     className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: PLAYER_HEX[s.player.color] }}
+                    style={{
+                      backgroundColor: PLAYER_HEX[s.player.color],
+                      boxShadow: isWinner ? `0 0 8px ${PLAYER_HEX[s.player.color]}` : undefined,
+                    }}
                   />
                   <span className="font-medium">{s.player.name}</span>
+                  {isWinner && (
+                    <span aria-hidden="true" className="text-amber-300">
+                      👑
+                    </span>
+                  )}
                 </td>
                 <td className="text-right">{s.routePoints}</td>
                 <td className={`text-right ${s.ticketPoints < 0 ? 'text-rose-400' : ''}`}>
@@ -117,7 +129,8 @@ export function Scoring({ state }: ScoringProps) {
                 </td>
                 <td className="text-right font-bold">{s.total}</td>
               </motion.tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
 
