@@ -1,6 +1,7 @@
 import type { MapData } from '@ttr/engine';
 import { hannoverFunMap } from './hannover-fun.js';
 import { hannoverMap } from './hannover.js';
+import { niedersachsenMap } from './niedersachsen.js';
 
 export interface MapMeta {
   /** Stable id used to select the map (e.g. persisted in config). */
@@ -26,6 +27,12 @@ export const MAPS: MapMeta[] = [
     description: 'Geographic layout, denser fictional connections tuned for play.',
     map: hannoverFunMap,
   },
+  {
+    id: 'niedersachsen',
+    name: 'Niedersachsen',
+    description: 'Statewide Lower Saxony map — cities from Emden to Göttingen.',
+    map: niedersachsenMap,
+  },
 ];
 
 export function mapById(id: string): MapData {
@@ -37,3 +44,4 @@ export const MAP_NAME = MAPS[0]!.name;
 
 export { hannoverMap } from './hannover.js';
 export { hannoverFunMap } from './hannover-fun.js';
+export { niedersachsenMap } from './niedersachsen.js';
