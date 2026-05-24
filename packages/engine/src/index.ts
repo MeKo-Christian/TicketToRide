@@ -8,6 +8,7 @@ export { createRng, type Rng } from './rng.js';
 export {
   LONGEST_PATH_BONUS,
   finalScores,
+  isTicketComplete,
   type PlayerScore,
 } from './scoring.js';
 export { initialState } from './state.js';

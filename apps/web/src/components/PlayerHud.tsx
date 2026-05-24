@@ -1,5 +1,5 @@
 import type { GameState, PlayerState } from '@ttr/engine';
-import { SOLID_COLORS } from '@ttr/engine';
+import { SOLID_COLORS, isTicketComplete } from '@ttr/engine';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { CARD_HEX, PLAYER_HEX, cardLabel } from '../lib/colors.js';
@@ -93,17 +93,34 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
               {player.tickets.map((t) => {
                 const from = state.map.stations.find((s) => s.id === t.from);
                 const to = state.map.stations.find((s) => s.id === t.to);
+                const done = isTicketComplete(player, t, state.map.routes);
                 return (
                   <li
                     key={t.id}
                     onMouseEnter={() => highlightTicketEndpoints([t.from, t.to])}
                     onMouseLeave={() => highlightTicketEndpoints([])}
-                    className="bg-slate-800 rounded px-2 py-1 flex justify-between gap-2 cursor-default"
+                    className={`rounded px-2 py-1 flex justify-between gap-2 cursor-default border-l-2 ${
+                      done
+                        ? 'bg-emerald-900/40 border-emerald-400'
+                        : 'bg-slate-800 border-transparent'
+                    }`}
+                    aria-label={`${from?.name} to ${to?.name}, ${t.points} points, ${
+                      done ? 'completed' : 'not yet connected'
+                    }`}
                   >
-                    <span className="truncate">
+                    <span className="truncate flex items-center gap-1">
+                      {done && (
+                        <span aria-hidden="true" className="text-emerald-300">
+                          ✓
+                        </span>
+                      )}
                       {from?.name} → {to?.name}
                     </span>
-                    <span className="text-amber-300 font-medium">{t.points}</span>
+                    <span
+                      className={`font-medium ${done ? 'text-emerald-300' : 'text-amber-300'}`}
+                    >
+                      {t.points}
+                    </span>
                   </li>
                 );
               })}

@@ -43,6 +43,15 @@ function ticketScoreFor(player: PlayerState, routes: Route[]): number {
   return total;
 }
 
+export function isTicketComplete(
+  player: PlayerState,
+  ticket: { from: StationId; to: StationId },
+  routes: Route[],
+): boolean {
+  const owned = routes.filter((r) => player.claimedRoutes.includes(r.id));
+  return stationsConnected(ticket.from, ticket.to, owned);
+}
+
 function stationsConnected(from: StationId, to: StationId, routes: Route[]): boolean {
   if (from === to) return true;
   const adj = new Map<StationId, StationId[]>();

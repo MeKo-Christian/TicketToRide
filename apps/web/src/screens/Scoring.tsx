@@ -2,6 +2,7 @@ import type { GameState } from '@ttr/engine';
 import { finalScores } from '@ttr/engine';
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
+import { Confetti } from '../components/Confetti.js';
 import { PLAYER_HEX } from '../lib/colors.js';
 import { useGameStore } from '../state/store.js';
 
@@ -21,33 +22,58 @@ export function Scoring({ state }: ScoringProps) {
       .sort((a, b) => b.total - a.total);
   }, [state]);
 
-  const winner = scores[0]!;
+  const topScore = scores[0]!.total;
+  const winners = scores.filter((s) => s.total === topScore);
+  const isTie = winners.length > 1;
+  const winnerColors = winners.map((w) => PLAYER_HEX[w.player.color]);
+  const confettiColors = [...winnerColors, '#facc15', '#f8fafc'];
+
+  const headline = isTie
+    ? `Tie at ${topScore} pts — ${winners.map((w) => w.player.name).join(' & ')}`
+    : `${winners[0]!.player.name} wins with ${topScore} pts`;
 
   return (
-    <main className="min-h-screen flex items-center justify-center p-6">
+    <main className="min-h-screen flex items-center justify-center p-6 relative">
+      <Confetti colors={confettiColors} />
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-2xl bg-slate-900 rounded-2xl shadow-xl p-8 space-y-6 border border-slate-700"
+        className="w-full max-w-2xl bg-slate-900 rounded-2xl shadow-xl p-8 space-y-6 border border-slate-700 relative z-10"
       >
-        <header className="text-center space-y-1">
+        <header className="text-center space-y-2">
+          <motion.div
+            initial={{ scale: 0, rotate: -30, opacity: 0 }}
+            animate={{ scale: 1, rotate: 0, opacity: 1 }}
+            transition={{ delay: 0.15, type: 'spring', stiffness: 220, damping: 12 }}
+            className="text-5xl"
+            aria-hidden="true"
+          >
+            🏆
+          </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
             className="text-sm uppercase tracking-widest text-slate-500"
           >
-            Final score
+            {isTie ? 'Game over' : 'Final score'}
           </motion.p>
           <motion.h1
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.25, type: 'spring', stiffness: 200 }}
             className="text-3xl font-bold"
+            style={
+              !isTie
+                ? {
+                    textShadow: `0 0 24px ${winnerColors[0]}66`,
+                  }
+                : undefined
+            }
             aria-live="polite"
           >
-            {winner.player.name} wins with {winner.total} pts
+            {headline}
           </motion.h1>
         </header>
 
