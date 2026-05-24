@@ -126,7 +126,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
     if (!state) return;
-    set({ state: reduce(state, action) });
+    const next = reduce(state, action);
+    // Auto-route to scoring if the engine reports finished (mirrors applyRemote).
+    const nextScreen = next.phase === 'finished' ? 'scoring' : get().screen;
+    set({ state: next, screen: nextScreen });
   },
 
   applyRemote: (msg) => {

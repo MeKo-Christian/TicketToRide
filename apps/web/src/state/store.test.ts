@@ -61,4 +61,39 @@ describe('useGameStore', () => {
     expect(useGameStore.getState().state).toBeNull();
     expect(useGameStore.getState().seatedPlayerId).toBeNull();
   });
+
+  it('routes to scoring when a local dispatch finishes the game', () => {
+    useGameStore.getState().startGame(cfg());
+
+    // Complete setup: each player keeps their offered tickets in turn.
+    while (useGameStore.getState().state?.phase === 'setup') {
+      const s = useGameStore.getState().state!;
+      const pending = s.pendingTicketDraw!;
+      useGameStore.getState().dispatch({
+        type: 'KeepTickets',
+        playerId: pending.playerId,
+        keep: pending.offered.slice(0, pending.minKeep).map((t) => t.id),
+      });
+    }
+
+    // Arrange a state one action away from finishing: it's the trigger
+    // player's final turn in the last round, and they've already drawn one card.
+    const playing = useGameStore.getState().state!;
+    useGameStore.setState({
+      screen: 'play',
+      state: {
+        ...playing,
+        phase: 'lastRound',
+        lastRoundTrigger: playing.turn,
+        turnsRemaining: 1,
+        pendingSecondCard: true,
+      },
+    });
+
+    // Drawing the second card ends the turn, wraps to the trigger player → finished.
+    useGameStore.getState().dispatch({ type: 'DrawBlind', playerId: playing.turn });
+
+    expect(useGameStore.getState().state?.phase).toBe('finished');
+    expect(useGameStore.getState().screen).toBe('scoring');
+  });
 });

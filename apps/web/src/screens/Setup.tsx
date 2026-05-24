@@ -2,7 +2,7 @@ import type { Difficulty } from '@ttr/ai';
 import { DIFFICULTIES } from '@ttr/ai';
 import type { PlayerColor } from '@ttr/engine';
 import { PLAYER_COLORS } from '@ttr/engine';
-import { hannoverMap } from '@ttr/map-data';
+import { MAPS } from '@ttr/map-data';
 import { useState } from 'react';
 import { PLAYER_HEX } from '../lib/colors.js';
 import { useGameStore } from '../state/store.js';
@@ -36,6 +36,7 @@ export function Setup() {
   const [count, setCount] = useState(2);
   const [seats, setSeats] = useState<SeatInput[]>(() => makeSeats(2));
   const [seed, setSeed] = useState(() => Math.floor(Math.random() * 1_000_000));
+  const [mapId, setMapId] = useState(MAPS[0]!.id);
 
   const updateCount = (n: number) => {
     setCount(n);
@@ -61,10 +62,11 @@ export function Setup() {
     seats.forEach((s, i) => {
       if (s.kind !== 'human') difficulties[`p${i + 1}`] = s.kind;
     });
+    const selectedMap = MAPS.find((m) => m.id === mapId) ?? MAPS[0]!;
     startGame(
       {
         seed,
-        map: hannoverMap,
+        map: selectedMap.map,
         players: seats.map((s, i) => ({
           id: `p${i + 1}`,
           name: s.name.trim(),
@@ -85,6 +87,29 @@ export function Setup() {
             Hot-seat for 2-5 players · Mix humans and AI · Hannover Stadtbahn map
           </p>
         </header>
+
+        <section className="space-y-2">
+          <span className="block text-sm font-medium">Map</span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {MAPS.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                onClick={() => setMapId(m.id)}
+                className={`text-left p-3 rounded-lg border transition ${
+                  mapId === m.id
+                    ? 'bg-indigo-600 border-indigo-500 text-white'
+                    : 'bg-slate-800 border-slate-700 hover:bg-slate-700'
+                }`}
+              >
+                <div className="font-medium">{m.name}</div>
+                <div className={`text-xs ${mapId === m.id ? 'text-indigo-100' : 'text-slate-400'}`}>
+                  {m.description}
+                </div>
+              </button>
+            ))}
+          </div>
+        </section>
 
         <section className="space-y-2">
           <label className="block text-sm font-medium" htmlFor="player-count">
