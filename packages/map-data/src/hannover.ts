@@ -24,7 +24,7 @@ const stations: Station[] = [
   { id: 'aegi', name: 'Aegidientorplatz', x: 560, y: 515 },
   { id: 'koenigsworth', name: 'Königsworther Platz', x: 350, y: 425 },
   { id: 'markthalle', name: 'Markthalle/Landtag', x: 465, y: 530 },
-  { id: 'waterloo', name: 'Waterloo', x: 550, y: 590 },
+  { id: 'waterloo', name: 'Waterloo', x: 470, y: 600 },
 
   // North
   { id: 'vahrenwalder', name: 'Vahrenwalder Platz', x: 500, y: 305 },
@@ -41,14 +41,14 @@ const stations: Station[] = [
   // West
   { id: 'garbsen', name: 'Garbsen', x: 180, y: 320 },
   { id: 'ahlem', name: 'Ahlem', x: 230, y: 510 },
-  { id: 'linden', name: 'Lindener Marktplatz', x: 430, y: 595 },
-  { id: 'empelde', name: 'Empelde', x: 305, y: 670 },
+  { id: 'linden', name: 'Lindener Marktplatz', x: 380, y: 615 },
+  { id: 'empelde', name: 'Empelde', x: 260, y: 680 },
   { id: 'wettbergen', name: 'Wettbergen', x: 350, y: 695 },
 
   // South
-  { id: 'allerweg', name: 'Allerweg', x: 485, y: 660 },
-  { id: 'sarstedt', name: 'Sarstedt', x: 685, y: 815 },
-  { id: 'rethen', name: 'Rethen', x: 620, y: 730 },
+  { id: 'allerweg', name: 'Allerweg', x: 475, y: 680 },
+  { id: 'sarstedt', name: 'Sarstedt', x: 680, y: 770 },
+  { id: 'rethen', name: 'Rethen', x: 595, y: 690 },
 
   // East — Medizinische Hochschule offset off the aegi↔zoo line so the L4 strip doesn't pass through it
   { id: 'med_hochschule', name: 'Medizinische Hochschule', x: 605, y: 485 },
@@ -124,12 +124,22 @@ const routes: Route[] = [
     line: 3,
   },
   {
-    id: 'markthalle-waterloo-yellow-3',
+    id: 'markthalle-waterloo-yellow-2',
     a: 'markthalle',
     b: 'waterloo',
-    length: 3,
+    length: 2,
     color: 'yellow',
     line: 1,
+    parallel: 'markthalle-waterloo-orange-2',
+  },
+  {
+    id: 'markthalle-waterloo-orange-2',
+    a: 'markthalle',
+    b: 'waterloo',
+    length: 2,
+    color: 'orange',
+    line: 9,
+    parallel: 'markthalle-waterloo-yellow-2',
   },
 
   // North
@@ -230,7 +240,7 @@ const routes: Route[] = [
     color: 'pink',
     line: 3,
   },
-  { id: 'waterloo-rethen-black-5', a: 'waterloo', b: 'rethen', length: 5, color: 'black', line: 1 },
+  { id: 'aegi-rethen-black-5', a: 'aegi', b: 'rethen', length: 5, color: 'black', line: 1 },
   { id: 'rethen-sarstedt-pink-3', a: 'rethen', b: 'sarstedt', length: 3, color: 'pink', line: 1 },
 
   // East
