@@ -158,10 +158,7 @@ Surface line in the inner city. Connects Waterloo / Markthalle area with the wes
 5. **Nordhafen reached via Steintor** (Line 6, Christuskirche/Goetheplatz/Niedersachsenring collapsed). Replaces fictional `vahrenwalder-nordhafen` and `stoecken-nordhafen`.
 6. **Wettbergen reached via Allerweg** (Lines 3/7, Bothmerstr collapsed). Replaces fictional `linden-wettbergen` and `empelde-wettbergen`.
 7. **Roderbruch reached via Medizinische Hochschule** (Line 4 east continuation, Geibelstr/Kantplatz/Misburger Str collapsed). Replaces fictional `zoo-roderbruch`.
-8. **Central-south topology**: Markthalle/Landtag (A-tunnel) and Aegidientorplatz (B/C-tunnel) are not directly connected, so there is no `aegi-markthalle` edge. The south corridors are modelled as two parallel paths from Kröpcke to Waterloo:
-   - **A-tunnel** via Landtag: `kroepcke-markthalle` (1 wagon) + `markthalle-waterloo` (parallel pair, 2 wagons each).
-   - **Direct** Kröpcke → Waterloo: `kroepcke-waterloo` parallel pair (2 wagons each), skipping the Aegi/Markthalle detour.
-   Aegi reaches the south via its own arm (`aegi-rethen`).
+8. **Central-south topology**: Markthalle/Landtag is not modelled as a separate node (it collapses into the tunnel corridor). Kröpcke connects straight to Waterloo via `kroepcke-waterloo`, a parallel pair (2 tracks, 2 wagons each). Aegi reaches the south via its own arm (`aegi-rethen`).
 9. **Line-attribution corrections**: `lister-bothfeld` is Line 8 (Bothfeld is a Line 8 terminus, not Line 9). `markthalle-waterloo` is Line 1 (shared A/B-tunnel main corridor — Line 17 is the D-surface line and doesn't run this stretch).
 
 ## Remaining pragmatic shortcuts (kept for game balance)
