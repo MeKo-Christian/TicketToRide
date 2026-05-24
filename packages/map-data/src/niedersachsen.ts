@@ -11,46 +11,46 @@ import type { MapData, Route, Station, Ticket } from '@ttr/engine';
 
 const stations: Station[] = [
   // North-west coast
-  { id: 'emden', name: 'Emden', x: 120, y: 175 },
-  { id: 'wilhelmshaven', name: 'Wilhelmshaven', x: 270, y: 120 },
-  { id: 'cuxhaven', name: 'Cuxhaven', x: 430, y: 70 },
-  { id: 'bremerhaven', name: 'Bremerhaven', x: 375, y: 155 },
-  { id: 'leer', name: 'Leer', x: 150, y: 235 },
-  { id: 'oldenburg', name: 'Oldenburg', x: 270, y: 235 },
-  { id: 'bremen', name: 'Bremen', x: 400, y: 245 },
-  { id: 'delmenhorst', name: 'Delmenhorst', x: 340, y: 275 },
+  { id: 'emden', name: 'Emden', x: 255, y: 305 },
+  { id: 'wilhelmshaven', name: 'Wilhelmshaven', x: 405, y: 250 },
+  { id: 'cuxhaven', name: 'Cuxhaven', x: 565, y: 200 },
+  { id: 'bremerhaven', name: 'Bremerhaven', x: 510, y: 285 },
+  { id: 'leer', name: 'Leer', x: 285, y: 365 },
+  { id: 'oldenburg', name: 'Oldenburg', x: 405, y: 365 },
+  { id: 'bremen', name: 'Bremen', x: 535, y: 375 },
+  { id: 'delmenhorst', name: 'Delmenhorst', x: 475, y: 405 },
 
   // West (Ems)
-  { id: 'nordhorn', name: 'Nordhorn', x: 105, y: 400 },
-  { id: 'lingen', name: 'Lingen', x: 175, y: 345 },
-  { id: 'meppen', name: 'Meppen', x: 160, y: 295 },
-  { id: 'osnabrueck', name: 'Osnabrück', x: 225, y: 460 },
+  { id: 'nordhorn', name: 'Nordhorn', x: 240, y: 530 },
+  { id: 'lingen', name: 'Lingen', x: 310, y: 475 },
+  { id: 'meppen', name: 'Meppen', x: 295, y: 425 },
+  { id: 'osnabrueck', name: 'Osnabrück', x: 360, y: 590 },
 
   // North-central / north-east
-  { id: 'stade', name: 'Stade', x: 495, y: 155 },
-  { id: 'verden', name: 'Verden', x: 435, y: 305 },
-  { id: 'nienburg', name: 'Nienburg', x: 390, y: 375 },
-  { id: 'lueneburg', name: 'Lüneburg', x: 600, y: 215 },
-  { id: 'uelzen', name: 'Uelzen', x: 605, y: 305 },
-  { id: 'celle', name: 'Celle', x: 515, y: 365 },
-  { id: 'gifhorn', name: 'Gifhorn', x: 605, y: 360 },
+  { id: 'stade', name: 'Stade', x: 630, y: 285 },
+  { id: 'verden', name: 'Verden', x: 570, y: 435 },
+  { id: 'nienburg', name: 'Nienburg', x: 525, y: 505 },
+  { id: 'lueneburg', name: 'Lüneburg', x: 735, y: 345 },
+  { id: 'uelzen', name: 'Uelzen', x: 740, y: 435 },
+  { id: 'celle', name: 'Celle', x: 650, y: 495 },
+  { id: 'gifhorn', name: 'Gifhorn', x: 740, y: 490 },
 
   // Central
-  { id: 'hannover', name: 'Hannover', x: 465, y: 425 },
-  { id: 'hildesheim', name: 'Hildesheim', x: 515, y: 480 },
-  { id: 'peine', name: 'Peine', x: 565, y: 435 },
+  { id: 'hannover', name: 'Hannover', x: 600, y: 555 },
+  { id: 'hildesheim', name: 'Hildesheim', x: 650, y: 610 },
+  { id: 'peine', name: 'Peine', x: 700, y: 565 },
 
   // East / south-east
-  { id: 'wolfsburg', name: 'Wolfsburg', x: 665, y: 375 },
-  { id: 'braunschweig', name: 'Braunschweig', x: 640, y: 455 },
-  { id: 'wolfenbuettel', name: 'Wolfenbüttel', x: 650, y: 495 },
-  { id: 'salzgitter', name: 'Salzgitter', x: 595, y: 505 },
-  { id: 'goslar', name: 'Goslar', x: 650, y: 560 },
+  { id: 'wolfsburg', name: 'Wolfsburg', x: 800, y: 505 },
+  { id: 'braunschweig', name: 'Braunschweig', x: 775, y: 585 },
+  { id: 'wolfenbuettel', name: 'Wolfenbüttel', x: 785, y: 625 },
+  { id: 'salzgitter', name: 'Salzgitter', x: 730, y: 635 },
+  { id: 'goslar', name: 'Goslar', x: 785, y: 690 },
 
   // South
-  { id: 'hameln', name: 'Hameln', x: 415, y: 500 },
-  { id: 'northeim', name: 'Northeim', x: 545, y: 565 },
-  { id: 'goettingen', name: 'Göttingen', x: 545, y: 625 },
+  { id: 'hameln', name: 'Hameln', x: 550, y: 630 },
+  { id: 'northeim', name: 'Northeim', x: 680, y: 695 },
+  { id: 'goettingen', name: 'Göttingen', x: 680, y: 755 },
 ];
 
 const routes: Route[] = [
