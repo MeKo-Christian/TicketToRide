@@ -1,5 +1,6 @@
 import type { GameState } from '@ttr/engine';
 import { finalScores } from '@ttr/engine';
+import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 import { PLAYER_HEX } from '../lib/colors.js';
 import { useGameStore } from '../state/store.js';
@@ -24,12 +25,30 @@ export function Scoring({ state }: ScoringProps) {
 
   return (
     <main className="min-h-screen flex items-center justify-center p-6">
-      <div className="w-full max-w-2xl bg-slate-900 rounded-2xl shadow-xl p-8 space-y-6 border border-slate-700">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-2xl bg-slate-900 rounded-2xl shadow-xl p-8 space-y-6 border border-slate-700"
+      >
         <header className="text-center space-y-1">
-          <p className="text-sm uppercase tracking-widest text-slate-500">Final score</p>
-          <h1 className="text-3xl font-bold">
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.1 }}
+            className="text-sm uppercase tracking-widest text-slate-500"
+          >
+            Final score
+          </motion.p>
+          <motion.h1
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.25, type: 'spring', stiffness: 200 }}
+            className="text-3xl font-bold"
+            aria-live="polite"
+          >
             {winner.player.name} wins with {winner.total} pts
-          </h1>
+          </motion.h1>
         </header>
 
         <table className="w-full text-sm">
@@ -44,7 +63,13 @@ export function Scoring({ state }: ScoringProps) {
           </thead>
           <tbody>
             {scores.map((s, i) => (
-              <tr key={s.playerId} className="border-t border-slate-800">
+              <motion.tr
+                key={s.playerId}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + i * 0.12 }}
+                className="border-t border-slate-800"
+              >
                 <td className="py-2 flex items-center gap-2">
                   <span className="text-slate-500 w-4">{i + 1}.</span>
                   <span
@@ -65,7 +90,7 @@ export function Scoring({ state }: ScoringProps) {
                   )}
                 </td>
                 <td className="text-right font-bold">{s.total}</td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
@@ -73,11 +98,11 @@ export function Scoring({ state }: ScoringProps) {
         <button
           type="button"
           onClick={reset}
-          className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold"
+          className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-sky-400"
         >
           New game
         </button>
-      </div>
+      </motion.div>
     </main>
   );
 }

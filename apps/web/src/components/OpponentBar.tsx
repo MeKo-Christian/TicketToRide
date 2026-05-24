@@ -12,14 +12,14 @@ export function OpponentBar({ state, viewerId }: OpponentBarProps) {
     Object.values(p.hand).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="bg-slate-900 border-b border-slate-800 px-4 py-2 flex gap-3 items-center text-xs">
-      <span className="text-slate-400 mr-1">Opponents</span>
+    <div className="bg-slate-900 border-b border-slate-800 px-4 py-2 flex gap-3 items-center text-xs overflow-x-auto">
+      <span className="text-slate-400 mr-1 flex-shrink-0">Opponents</span>
       {others.map((p) => {
         const active = state.turn === p.id;
         return (
           <div
             key={p.id}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md border ${
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-md border flex-shrink-0 ${
               active ? 'border-emerald-500 bg-emerald-900/30' : 'border-slate-700 bg-slate-800/50'
             }`}
           >
@@ -38,7 +38,7 @@ export function OpponentBar({ state, viewerId }: OpponentBarProps) {
           </div>
         );
       })}
-      <div className="ml-auto flex items-center gap-3 text-slate-400">
+      <div className="ml-auto flex items-center gap-3 text-slate-400 flex-shrink-0">
         <span>Deck: {state.trainDeck.length}</span>
         <span>Tickets: {state.ticketDeck.length}</span>
         {state.phase === 'lastRound' && (

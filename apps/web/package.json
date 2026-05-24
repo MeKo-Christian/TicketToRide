@@ -14,6 +14,7 @@
     "@ttr/ai": "workspace:*",
     "@ttr/engine": "workspace:*",
     "@ttr/map-data": "workspace:*",
+    "framer-motion": "^12.40.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "zustand": "^5.0.13"

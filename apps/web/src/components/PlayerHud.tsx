@@ -1,5 +1,6 @@
 import type { GameState, PlayerState } from '@ttr/engine';
 import { SOLID_COLORS } from '@ttr/engine';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { CARD_HEX, PLAYER_HEX, cardLabel } from '../lib/colors.js';
 
@@ -15,7 +16,7 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
 
   return (
     <div className="bg-slate-900 border-t border-slate-800 px-4 py-3">
-      <div className="flex items-start gap-6">
+      <div className="flex flex-col md:flex-row md:items-start gap-3 md:gap-6">
         <div className="flex-shrink-0 space-y-1">
           <div className="flex items-center gap-2">
             <span
@@ -29,12 +30,13 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
               </span>
             )}
           </div>
-          <div className="text-xs text-slate-400 space-y-0.5">
+          <div className="text-xs text-slate-400 space-y-0.5" aria-live="polite">
             <div>
-              Score <span className="text-slate-100 font-medium">{player.score}</span>
+              Score <AnimatedNumber value={player.score} className="text-slate-100 font-medium" />
             </div>
             <div>
-              Cars <span className="text-slate-100 font-medium">{player.trainCars}</span>
+              Cars{' '}
+              <AnimatedNumber value={player.trainCars} className="text-slate-100 font-medium" />
             </div>
           </div>
         </div>
@@ -45,8 +47,10 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
             {SOLID_COLORS.map((c) => {
               const n = player.hand[c];
               return (
-                <span
+                <motion.span
                   key={c}
+                  layout
+                  animate={{ scale: n > 0 ? 1 : 0.92 }}
                   className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border ${
                     n > 0 ? 'border-slate-700' : 'border-slate-800 opacity-30'
                   }`}
@@ -56,8 +60,8 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
                   }}
                   title={`${cardLabel(c)}: ${n}`}
                 >
-                  {cardLabel(c)} {n}
-                </span>
+                  {cardLabel(c)} <AnimatedNumber value={n} />
+                </motion.span>
               );
             })}
             <span
@@ -69,16 +73,17 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
               }}
               title={`Rainbow: ${player.hand.rainbow}`}
             >
-              Rainbow {player.hand.rainbow}
+              Rainbow <AnimatedNumber value={player.hand.rainbow} />
             </span>
           </div>
         </div>
 
-        <div className="flex-shrink-0 w-72">
+        <div className="flex-shrink-0 w-full md:w-72">
           <button
             type="button"
-            className="text-xs text-slate-400 hover:text-slate-200 mb-1"
+            className="text-xs text-slate-400 hover:text-slate-200 mb-1 focus:outline-none focus:ring-2 focus:ring-sky-400 rounded"
             onClick={() => setShowTickets((v) => !v)}
+            aria-expanded={showTickets}
           >
             Tickets ({player.tickets.length}) {showTickets ? '▾' : '▸'}
           </button>
@@ -107,5 +112,24 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
         </div>
       </div>
     </div>
+  );
+}
+
+function AnimatedNumber({ value, className }: { value: number; className?: string }) {
+  return (
+    <span className={`inline-block tabular-nums ${className ?? ''}`}>
+      <AnimatePresence mode="popLayout" initial={false}>
+        <motion.span
+          key={value}
+          initial={{ y: -8, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 8, opacity: 0 }}
+          transition={{ duration: 0.18 }}
+          className="inline-block"
+        >
+          {value}
+        </motion.span>
+      </AnimatePresence>
+    </span>
   );
 }

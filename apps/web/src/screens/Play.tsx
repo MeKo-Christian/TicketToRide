@@ -1,6 +1,6 @@
 import { chooseAction } from '@ttr/ai';
-import type { GameState, RouteId } from '@ttr/engine';
-import { useEffect, useState } from 'react';
+import type { GameEvent, GameState, RouteId } from '@ttr/engine';
+import { useEffect, useMemo, useState } from 'react';
 import { ActionPanel } from '../components/ActionPanel.js';
 import { Board } from '../components/Board/Board.js';
 import { ClaimRouteDialog } from '../components/ClaimRouteDialog.js';
@@ -68,8 +68,8 @@ export function Play({ state }: PlayProps) {
   return (
     <div className="min-h-screen flex flex-col">
       <OpponentBar state={state} viewerId={viewer.id} />
-      <div className="flex-1 flex">
-        <div className="flex-1 relative">
+      <div className="flex-1 flex flex-col md:flex-row min-h-0">
+        <div className="flex-1 relative min-h-[300px]">
           <Board
             state={state}
             viewerId={viewer.id}
@@ -100,6 +100,8 @@ export function Play({ state }: PlayProps) {
         highlightTicketEndpoints={(ids) => setHighlight(new Set(ids))}
       />
 
+      <LiveEventLog log={state.log} players={state.players} />
+
       {state.pendingTicketDraw && state.pendingTicketDraw.playerId === viewer.id && !activeIsAI && (
         <TicketDrawDialog state={state} />
       )}
@@ -113,4 +115,48 @@ export function Play({ state }: PlayProps) {
       )}
     </div>
   );
+}
+
+function LiveEventLog({
+  log,
+  players,
+}: {
+  log: GameEvent[];
+  players: GameState['players'];
+}) {
+  const lastFew = useMemo(() => log.slice(-3), [log]);
+  const nameFor = (id: string) => players.find((p) => p.id === id)?.name ?? id;
+  const messages = lastFew.map((e) => formatEvent(e, nameFor)).filter(Boolean);
+  return (
+    <div className="sr-only" role="log" aria-live="polite" aria-atomic="false">
+      {messages.map((m, i) => (
+        <p key={`${i}-${m}`}>{m}</p>
+      ))}
+    </div>
+  );
+}
+
+function formatEvent(e: GameEvent, nameFor: (id: string) => string): string {
+  switch (e.type) {
+    case 'gameStarted':
+      return `Game started. ${nameFor(e.firstPlayer)} goes first.`;
+    case 'drewBlind':
+      return `${nameFor(e.playerId)} drew from the deck.`;
+    case 'drewFaceUp':
+      return `${nameFor(e.playerId)} took a ${e.card} card.`;
+    case 'claimedRoute':
+      return `${nameFor(e.playerId)} claimed a route.`;
+    case 'drewTickets':
+      return `${nameFor(e.playerId)} drew tickets.`;
+    case 'keptTickets':
+      return `${nameFor(e.playerId)} kept tickets.`;
+    case 'turnEnded':
+      return `${nameFor(e.playerId)} ended their turn.`;
+    case 'lastRoundTriggered':
+      return `${nameFor(e.playerId)} triggered the last round.`;
+    case 'gameFinished':
+      return 'Game finished.';
+    default:
+      return '';
+  }
 }

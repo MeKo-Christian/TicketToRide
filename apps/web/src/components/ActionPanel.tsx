@@ -1,4 +1,5 @@
 import type { GameState, RouteId } from '@ttr/engine';
+import { AnimatePresence, motion } from 'framer-motion';
 import { CARD_HEX } from '../lib/colors.js';
 import {
   canClaimRoute,
@@ -28,7 +29,7 @@ export function ActionPanel({ state, viewerId, selectedRouteId, onOpenClaim }: A
     : null;
 
   return (
-    <aside className="w-72 bg-slate-900 border-l border-slate-800 p-4 flex flex-col gap-4">
+    <aside className="w-full md:w-72 bg-slate-900 border-t md:border-t-0 md:border-l border-slate-800 p-4 flex flex-col gap-4 overflow-y-auto">
       <header>
         <h2 className="font-semibold">Your turn</h2>
         <p className="text-xs text-slate-400">
@@ -39,28 +40,38 @@ export function ActionPanel({ state, viewerId, selectedRouteId, onOpenClaim }: A
       <section>
         <h3 className="text-xs uppercase tracking-wide text-slate-500 mb-2">Face-up</h3>
         <div className="flex gap-1.5 flex-wrap">
-          {state.faceUp.map((card, i) => {
-            const ok = canDrawFaceUp(state, viewerId, i);
-            return (
-              <button
-                type="button"
-                key={i}
-                disabled={!ok.allowed}
-                onClick={() => dispatch({ type: 'DrawFaceUp', playerId: viewerId, index: i })}
-                title={ok.reason}
-                className="w-12 h-16 rounded-md border border-slate-700 text-[10px] font-semibold flex items-center justify-center transition disabled:opacity-30 hover:scale-105"
-                style={{
-                  background:
-                    card === 'rainbow'
-                      ? 'linear-gradient(135deg,#dc2626,#facc15,#16a34a,#2563eb,#a855f7)'
-                      : CARD_HEX[card],
-                  color: card === 'yellow' || card === 'white' ? '#0f172a' : '#fff',
-                }}
-              >
-                {card === 'rainbow' ? '★' : card[0]?.toUpperCase()}
-              </button>
-            );
-          })}
+          <AnimatePresence mode="popLayout">
+            {state.faceUp.map((card, i) => {
+              const ok = canDrawFaceUp(state, viewerId, i);
+              return (
+                <motion.button
+                  type="button"
+                  key={`${i}-${card}`}
+                  layout
+                  initial={{ rotateY: 90, opacity: 0 }}
+                  animate={{ rotateY: 0, opacity: 1 }}
+                  exit={{ rotateY: -90, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.95 }}
+                  disabled={!ok.allowed}
+                  onClick={() => dispatch({ type: 'DrawFaceUp', playerId: viewerId, index: i })}
+                  title={ok.reason}
+                  aria-label={`Take ${card} card from face-up row`}
+                  className="w-12 h-16 rounded-md border border-slate-700 text-[10px] font-semibold flex items-center justify-center disabled:opacity-30 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  style={{
+                    background:
+                      card === 'rainbow'
+                        ? 'linear-gradient(135deg,#dc2626,#facc15,#16a34a,#2563eb,#a855f7)'
+                        : CARD_HEX[card],
+                    color: card === 'yellow' || card === 'white' ? '#0f172a' : '#fff',
+                  }}
+                >
+                  {card === 'rainbow' ? '★' : card[0]?.toUpperCase()}
+                </motion.button>
+              );
+            })}
+          </AnimatePresence>
         </div>
       </section>
 
@@ -116,7 +127,7 @@ function ActionButton({ label, sublabel, allow, onClick, accent = 'indigo' }: Ac
       disabled={!allow.allowed}
       onClick={onClick}
       title={allow.reason}
-      className={`text-left rounded-lg border px-3 py-2 transition disabled:bg-slate-800 disabled:border-slate-700 disabled:text-slate-500 ${colors}`}
+      className={`text-left rounded-lg border px-3 py-2 transition disabled:bg-slate-800 disabled:border-slate-700 disabled:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400 ${colors}`}
     >
       <div className="font-semibold">{label}</div>
       <div className="text-xs opacity-80 truncate">{allow.allowed ? sublabel : allow.reason}</div>
