@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { PLAYER_HEX, routeStrokeHex } from '../../lib/colors.js';
 import { canClaimRoute, ownershipFor } from '../../state/action-availability.js';
-import { parallelSides, segmentsFor } from './route-geometry.js';
+import { WAGON_LENGTH, parallelSides, segmentsFor } from './route-geometry.js';
 import { type ViewBox, type ViewBoxBounds, applyPan, applyZoom } from './viewbox.js';
 
 interface BoardProps {
@@ -148,11 +148,11 @@ export function Board({
           const owner = ownership.get(route.id);
           const isSelected = selectedRouteId === route.id;
           const claimable = canClaimRoute(state, viewerId, route.id).allowed;
-          const baseColor = owner
-            ? (ownerColor.get(owner) ?? '#e2e8f0')
-            : routeStrokeHex(route.color);
+          const routeColor = routeStrokeHex(route.color);
+          const ownerHex = owner ? (ownerColor.get(owner) ?? '#e2e8f0') : null;
           const dim = !owner && !claimable;
-          const lineWidth = isSelected ? 14 : 11;
+          const slotHeight = isSelected ? 18 : 15;
+          const wagonHeight = isSelected ? 16 : 13;
           const ariaLabel = `Route ${route.color} length ${route.length} from ${stationById.get(route.a)?.name ?? route.a} to ${stationById.get(route.b)?.name ?? route.b}${owner ? `, owned by ${state.players.find((p) => p.id === owner)?.name ?? owner}` : claimable ? ', claimable' : ''}`;
 
           return (
@@ -179,60 +179,46 @@ export function Board({
                 }}
               />
               {segs.map((s, i) => {
-                if (owner) {
-                  const angle = (Math.atan2(s.y2 - s.y1, s.x2 - s.x1) * 180) / Math.PI;
-                  const length = Math.hypot(s.x2 - s.x1, s.y2 - s.y1);
-                  const cx = (s.x1 + s.x2) / 2;
-                  const cy = (s.y1 + s.y2) / 2;
-                  const h = isSelected ? 16 : 14;
-                  return (
-                    <motion.rect
-                      key={i}
-                      x={cx - length / 2}
-                      y={cy - h / 2}
-                      width={length}
-                      height={h}
-                      rx={3}
-                      ry={3}
-                      fill={baseColor}
-                      stroke="#f8fafc"
-                      strokeWidth={1.6}
-                      transform={`rotate(${angle} ${cx} ${cy})`}
-                      filter="url(#carShadow)"
-                      pointerEvents="none"
-                      initial={{ opacity: 0, scale: 0.6 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.32, delay: i * 0.06 }}
-                    />
-                  );
-                }
+                const angle = (Math.atan2(s.y2 - s.y1, s.x2 - s.x1) * 180) / Math.PI;
+                const cx = (s.x1 + s.x2) / 2;
+                const cy = (s.y1 + s.y2) / 2;
+                const slotOpacity = dim ? 0.45 : owner ? 0.9 : 1;
                 return (
                   <g key={i}>
-                    <line
-                      x1={s.x1}
-                      y1={s.y1}
-                      x2={s.x2}
-                      y2={s.y2}
-                      stroke="#0b1220"
-                      strokeWidth={lineWidth + 4}
-                      strokeLinecap="round"
-                      opacity={dim ? 0.35 : 0.6}
+                    <rect
+                      x={cx - WAGON_LENGTH / 2}
+                      y={cy - slotHeight / 2}
+                      width={WAGON_LENGTH}
+                      height={slotHeight}
+                      rx={3}
+                      ry={3}
+                      fill="#0b1220"
+                      fillOpacity={0.75}
+                      stroke={routeColor}
+                      strokeWidth={2}
+                      opacity={slotOpacity}
+                      transform={`rotate(${angle} ${cx} ${cy})`}
                       pointerEvents="none"
                     />
-                    <motion.line
-                      x1={s.x1}
-                      y1={s.y1}
-                      x2={s.x2}
-                      y2={s.y2}
-                      stroke={baseColor}
-                      strokeWidth={lineWidth}
-                      strokeLinecap="round"
-                      strokeDasharray={`${Math.max(3, lineWidth * 0.7)} ${Math.max(3, lineWidth * 0.5)}`}
-                      pointerEvents="none"
-                      initial={false}
-                      animate={{ opacity: dim ? 0.4 : 1 }}
-                      transition={{ duration: 0.3 }}
-                    />
+                    {ownerHex && (
+                      <motion.rect
+                        x={cx - WAGON_LENGTH / 2 + 1}
+                        y={cy - wagonHeight / 2}
+                        width={WAGON_LENGTH - 2}
+                        height={wagonHeight}
+                        rx={2.5}
+                        ry={2.5}
+                        fill={ownerHex}
+                        stroke="#f8fafc"
+                        strokeWidth={1.4}
+                        transform={`rotate(${angle} ${cx} ${cy})`}
+                        filter="url(#carShadow)"
+                        pointerEvents="none"
+                        initial={{ opacity: 0, scale: 0.6 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.32, delay: i * 0.06 }}
+                      />
+                    )}
                   </g>
                 );
               })}

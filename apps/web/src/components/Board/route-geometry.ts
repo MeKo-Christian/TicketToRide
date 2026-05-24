@@ -7,13 +7,14 @@ export interface Segment {
   y2: number;
 }
 
-const STATION_RADIUS = 18;
-const SEGMENT_GAP = 4;
 const PARALLEL_OFFSET = 9;
 
+export const WAGON_LENGTH = 22;
+export const WAGON_GAP = 5;
+
 /**
- * Split a route into N carriage-shaped segments. Handles parallel-route offsetting
- * so double routes don't overlap.
+ * Lay out a route as N fixed-width wagon slots centered between the two stations.
+ * Slot width is constant across the entire board so the player can count slots = cost.
  */
 export function segmentsFor(
   route: Route,
@@ -28,29 +29,26 @@ export function segmentsFor(
 
   const ux = dx / dist;
   const uy = dy / dist;
-  // Left-hand perpendicular.
   const px = -uy;
   const py = ux;
 
   const offset = (options.parallelSide ?? 0) * PARALLEL_OFFSET;
-  const startX = a.x + ux * STATION_RADIUS + px * offset;
-  const startY = a.y + uy * STATION_RADIUS + py * offset;
-  const endX = b.x - ux * STATION_RADIUS + px * offset;
-  const endY = b.y - uy * STATION_RADIUS + py * offset;
+  const midX = (a.x + b.x) / 2 + px * offset;
+  const midY = (a.y + b.y) / 2 + py * offset;
 
-  const usable = Math.hypot(endX - startX, endY - startY);
-  if (usable <= 0) return [];
+  const totalLen = route.length * WAGON_LENGTH + (route.length - 1) * WAGON_GAP;
+  const startT = -totalLen / 2;
+  const stride = WAGON_LENGTH + WAGON_GAP;
 
-  const segLen = usable / route.length;
   const segs: Segment[] = [];
   for (let i = 0; i < route.length; i++) {
-    const t1 = i * segLen + SEGMENT_GAP / 2;
-    const t2 = (i + 1) * segLen - SEGMENT_GAP / 2;
+    const t1 = startT + i * stride;
+    const t2 = t1 + WAGON_LENGTH;
     segs.push({
-      x1: startX + ux * t1,
-      y1: startY + uy * t1,
-      x2: startX + ux * t2,
-      y2: startY + uy * t2,
+      x1: midX + ux * t1,
+      y1: midY + uy * t1,
+      x2: midX + ux * t2,
+      y2: midY + uy * t2,
     });
   }
   return segs;
