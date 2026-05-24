@@ -23,7 +23,7 @@ const stations: Station[] = [
   { id: 'steintor', name: 'Steintor', x: 430, y: 415 },
   { id: 'aegi', name: 'Aegidientorplatz', x: 560, y: 515 },
   { id: 'koenigsworth', name: 'Königsworther Platz', x: 350, y: 425 },
-  { id: 'markthalle', name: 'Markthalle/Landtag', x: 465, y: 530 },
+  { id: 'markthalle', name: 'Markthalle/Landtag', x: 435, y: 530 },
   { id: 'waterloo', name: 'Waterloo', x: 470, y: 600 },
 
   // North
@@ -114,7 +114,6 @@ const routes: Route[] = [
     color: 'white',
     line: 4,
   },
-  { id: 'aegi-markthalle-black-2', a: 'aegi', b: 'markthalle', length: 2, color: 'black', line: 1 },
   {
     id: 'kroepcke-markthalle-blue-1',
     a: 'kroepcke',
@@ -122,6 +121,24 @@ const routes: Route[] = [
     length: 1,
     color: 'blue',
     line: 3,
+  },
+  {
+    id: 'kroepcke-waterloo-white-2',
+    a: 'kroepcke',
+    b: 'waterloo',
+    length: 2,
+    color: 'white',
+    line: 3,
+    parallel: 'kroepcke-waterloo-black-2',
+  },
+  {
+    id: 'kroepcke-waterloo-black-2',
+    a: 'kroepcke',
+    b: 'waterloo',
+    length: 2,
+    color: 'black',
+    line: 8,
+    parallel: 'kroepcke-waterloo-white-2',
   },
   {
     id: 'markthalle-waterloo-yellow-2',
