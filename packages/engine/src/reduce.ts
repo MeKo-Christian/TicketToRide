@@ -207,18 +207,14 @@ function handleClaimRoute(
   const claimed = state.players.find((p) => p.claimedRoutes.includes(route.id));
   if (claimed) return logInvalid(state, action.playerId, 'Route already claimed');
 
-  // Parallel-route rules.
+  // Parallel-route rules: a player may never claim both parallels themselves,
+  // but the second parallel is always available to a different player regardless
+  // of player count.
   const parallelId = route.parallel;
   if (parallelId) {
-    const playerCount = state.players.length;
     const parallelClaim = state.players.find((p) => p.claimedRoutes.includes(parallelId));
-    if (parallelClaim) {
-      if (playerCount < 4) {
-        return logInvalid(state, action.playerId, 'Parallel routes disabled at <4 players');
-      }
-      if (parallelClaim.id === action.playerId) {
-        return logInvalid(state, action.playerId, 'Cannot claim both parallels');
-      }
+    if (parallelClaim && parallelClaim.id === action.playerId) {
+      return logInvalid(state, action.playerId, 'Cannot claim both parallels');
     }
   }
 

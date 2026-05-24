@@ -168,8 +168,8 @@ describe('ClaimRoute', () => {
     expect(s.log.at(-1)?.type).toBe('invalid');
   });
 
-  it('blocks a player from claiming both parallels of a double route', () => {
-    let s = gameInPlay(2, 30); // 2 players: parallels disabled entirely
+  it('allows a different player to claim the parallel at any player count', () => {
+    let s = gameInPlay(2, 30);
     const p1 = s.turn;
     s = setHand(s, p1, { yellow: 5 });
     s = reduce(s, {
@@ -187,8 +187,7 @@ describe('ClaimRoute', () => {
       routeId: 'CE-yellow-2-b',
       spent: ['black', 'black'],
     });
-    // At 2-3 players, the second parallel is forbidden entirely
-    expect(s.log.at(-1)?.type).toBe('invalid');
+    expect(s.players.find((p) => p.id === p2)!.claimedRoutes).toContain('CE-yellow-2-b');
   });
 
   it('allows a different player to claim the parallel at 4+ players', () => {

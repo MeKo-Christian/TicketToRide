@@ -149,13 +149,29 @@ Surface line in the inner city. Connects Waterloo / Markthalle area with the wes
 | `messe_ost` | Messe/Ost | 6 | SE terminus of Line 6 |
 | `misburg` | Misburg | 7 | NE terminus of Line 7 |
 
-## Issues with our current map (May 2026)
+## Fixes applied to our map
 
-1. **Universität** is not a real Stadtbahn stop. The station we labelled "Universität" represents the **Medizinische Hochschule** (MHH/Universitätsklinikum) stop on Line 4. → rename.
-2. **Lindener Marktplatz** is reached via **Waterloo** (Line 9: Waterloo → Schwarzer Bär → Lindener Marktplatz). Our `markthalle-linden` and `koenigsworth-linden` routes contradict the real corridor. → replace with `waterloo-linden`.
-3. **Garbsen ↔ Ahlem** is fictional. Garbsen is on Line 4 (via Stöcken); Ahlem is on Line 10 (via Königsworther Platz). The two arms meet only at Königsworther Platz, not directly. → drop the edge; add `garbsen-stoecken` (Line 4) so Garbsen still has a path.
-4. `haltenhoff-koenigsworth` and `haltenhoff-stoecken` connect across unrelated lines (Haltenhoffstr is Line 11; Stöcken is Line 4/5; Königsworther is Line 4/10). Real path from Haltenhoffstr to the centre goes via **Steintor** (Christuskirche → Goetheplatz → Steintor). → replace with `haltenhoff-steintor`.
-5. Several suburban shortcuts (`stoecken-nordhafen`, `bothfeld-fasanenkrug`, `bothfeld-altwarmbuechen`, `lister-bothfeld`, `vahrenwalder-nordhafen`, `koenigsworth-ahlem`, `linden-wettbergen`, `empelde-wettbergen`, `messe_ost-anderten`, `anderten-misburg`, `zoo-roderbruch`, `zoo-anderten`, `aegi-zoo`) remain as deliberate game-balance "feeder" connections even though they aren't single-line corridors. They're geographically plausible and the alternative — a strict star around Kröpcke — kills route variety.
+1. **Universität → Medizinische Hochschule** (Line 4). The MHH/Universitätsklinikum stop is the actual name; there's no Stadtbahn stop called "Universität".
+2. **Lindener Marktplatz reached via Waterloo** (Line 9: Waterloo → Schwarzer Bär → Linden). Replaces fictional `markthalle-linden` and `koenigsworth-linden`.
+3. **Garbsen reached via Stöcken** (Line 4). The fictional `garbsen-ahlem` edge is gone — the two arms only meet at Königsworther Platz.
+4. **Haltenhoffstraße → Steintor** (Line 11, Christuskirche/Goetheplatz collapsed). Replaces fictional `haltenhoff-koenigsworth` and `haltenhoff-stoecken`.
+5. **Nordhafen reached via Steintor** (Line 6, Christuskirche/Goetheplatz/Niedersachsenring collapsed). Replaces fictional `vahrenwalder-nordhafen` and `stoecken-nordhafen`.
+6. **Wettbergen reached via Allerweg** (Lines 3/7, Bothmerstr collapsed). Replaces fictional `linden-wettbergen` and `empelde-wettbergen`.
+7. **Roderbruch reached via Medizinische Hochschule** (Line 4 east continuation, Geibelstr/Kantplatz/Misburger Str collapsed). Replaces fictional `zoo-roderbruch`.
+8. **Aegi → Markthalle → Waterloo** is the actual B-tunnel chain. Replaces the Markthalle-skipping `aegi-waterloo` shortcut with `aegi-markthalle` so the topology matches the real corridor.
+9. **Line-attribution corrections**: `lister-bothfeld` is Line 8 (Bothfeld is a Line 8 terminus, not Line 9). `markthalle-waterloo` is Line 1 (shared A/B-tunnel main corridor — Line 17 is the D-surface line and doesn't run this stretch).
+
+## Remaining pragmatic shortcuts (kept for game balance)
+
+These cross-network edges don't correspond to a single real Stadtbahn line, but each one connects two stations whose real corridor passes through intermediate stops we don't model (Spannhagengarten, Vier Grenzen, Sahlkamp, Klingerstr, Pelikanstr). Removing them in isolation would orphan Altwarmbüchen, Fasanenkrug, Misburg, or the Zoo branch from the rest of the graph. We treat them as "feeder/bus" connections:
+
+- `bothfeld-altwarmbuechen` — real path: both reached from Hbf via the NE corridor, but on different branches at Sahlkamp.
+- `bothfeld-fasanenkrug` — same NE corridor, different branches.
+- `med_hochschule-zoo` — Line 4 and Lines 5/11 fork at Marienstr; not a shared track.
+- `messe_ost-anderten` — Line 6 and Line 5 termini, separate SE branches.
+- `anderten-misburg` — Line 5 and Line 7 termini; Misburg is reached from Hbf via Pelikanstr/Klingerstr in reality.
+
+If we ever want strict realism we can swap each shortcut for a long collapsed edge from the centre (Hbf-Misburg, Hbf-Altwarmbüchen, Hbf-Fasanenkrug) or introduce the missing NE-corridor stations.
 
 ## Sources
 

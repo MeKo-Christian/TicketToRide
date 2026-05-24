@@ -110,7 +110,7 @@ describe('canClaimRoute', () => {
     expect(canClaimRoute(taken, taken.turn, route.id).reason).toMatch(/already claimed/i);
   });
 
-  it('denies parallel route at 2 players when first half is taken', () => {
+  it('allows a different player to claim the parallel even at 2 players', () => {
     const s = gameInPlay();
     const pair = hannoverMap.routes.find((r) => r.parallel)!;
     const taken = {
@@ -120,7 +120,21 @@ describe('canClaimRoute', () => {
         claimedRoutes: p.id === s.turn ? [] : [pair.id],
       })),
     };
-    expect(canClaimRoute(taken, taken.turn, pair.parallel!).reason).toMatch(/<4 players/);
+    const result = canClaimRoute(taken, taken.turn, pair.parallel!);
+    expect(result.reason ?? '').not.toMatch(/parallel/i);
+  });
+
+  it('denies a player from claiming both halves of a parallel pair', () => {
+    const s = gameInPlay();
+    const pair = hannoverMap.routes.find((r) => r.parallel)!;
+    const taken = {
+      ...s,
+      players: s.players.map((p) => ({
+        ...p,
+        claimedRoutes: p.id === s.turn ? [pair.id] : [],
+      })),
+    };
+    expect(canClaimRoute(taken, taken.turn, pair.parallel!).reason).toMatch(/both parallels/i);
   });
 });
 

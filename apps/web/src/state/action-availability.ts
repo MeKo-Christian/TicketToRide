@@ -60,9 +60,8 @@ export function canClaimRoute(state: GameState, playerId: string, routeId: Route
   }
   if (route.parallel) {
     const parallelClaim = state.players.find((p) => p.claimedRoutes.includes(route.parallel!));
-    if (parallelClaim) {
-      if (state.players.length < 4) return deny('Parallel route disabled at <4 players');
-      if (parallelClaim.id === playerId) return deny('Cannot claim both parallels');
+    if (parallelClaim && parallelClaim.id === playerId) {
+      return deny('Cannot claim both parallels');
     }
   }
   const player = state.players.find((p) => p.id === playerId)!;

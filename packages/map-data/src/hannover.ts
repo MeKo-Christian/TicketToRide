@@ -36,7 +36,7 @@ const stations: Station[] = [
   { id: 'alte_heide', name: 'Alte Heide', x: 710, y: 320 },
   { id: 'altwarmbuechen', name: 'Altwarmbüchen', x: 745, y: 220 },
   { id: 'fasanenkrug', name: 'Fasanenkrug', x: 665, y: 195 },
-  { id: 'stoecken', name: 'Stöcken', x: 290, y: 250 },
+  { id: 'stoecken', name: 'Stöcken', x: 340, y: 290 },
 
   // West
   { id: 'garbsen', name: 'Garbsen', x: 180, y: 320 },
@@ -53,7 +53,7 @@ const stations: Station[] = [
   // East — Medizinische Hochschule offset off the aegi↔zoo line so the L4 strip doesn't pass through it
   { id: 'med_hochschule', name: 'Medizinische Hochschule', x: 605, y: 485 },
   { id: 'zoo', name: 'Zoo', x: 700, y: 525 },
-  { id: 'roderbruch', name: 'Roderbruch', x: 815, y: 520 },
+  { id: 'roderbruch', name: 'Roderbruch', x: 790, y: 480 },
   { id: 'anderten', name: 'Anderten', x: 760, y: 660 },
   { id: 'messe_ost', name: 'Messe/Ost', x: 645, y: 640 },
   { id: 'misburg', name: 'Misburg', x: 870, y: 580 },
@@ -114,7 +114,7 @@ const routes: Route[] = [
     color: 'white',
     line: 4,
   },
-  { id: 'aegi-waterloo-black-1', a: 'aegi', b: 'waterloo', length: 1, color: 'black', line: 1 },
+  { id: 'aegi-markthalle-black-2', a: 'aegi', b: 'markthalle', length: 2, color: 'black', line: 1 },
   {
     id: 'kroepcke-markthalle-blue-1',
     a: 'kroepcke',
@@ -129,7 +129,7 @@ const routes: Route[] = [
     b: 'waterloo',
     length: 3,
     color: 'yellow',
-    line: 17,
+    line: 1,
   },
 
   // North
@@ -143,10 +143,10 @@ const routes: Route[] = [
     line: 1,
   },
   {
-    id: 'vahrenwalder-nordhafen-green-3',
-    a: 'vahrenwalder',
+    id: 'steintor-nordhafen-green-5',
+    a: 'steintor',
     b: 'nordhafen',
-    length: 3,
+    length: 5,
     color: 'green',
     line: 6,
   },
@@ -159,7 +159,7 @@ const routes: Route[] = [
     color: 'white',
     line: 2,
   },
-  { id: 'lister-bothfeld-pink-3', a: 'lister', b: 'bothfeld', length: 3, color: 'pink', line: 9 },
+  { id: 'lister-bothfeld-pink-3', a: 'lister', b: 'bothfeld', length: 3, color: 'pink', line: 8 },
   {
     id: 'bothfeld-altwarmbuechen-orange-3',
     a: 'bothfeld',
@@ -184,14 +184,6 @@ const routes: Route[] = [
     color: 'yellow',
     line: 11,
   },
-  {
-    id: 'stoecken-nordhafen-white-2',
-    a: 'stoecken',
-    b: 'nordhafen',
-    length: 2,
-    color: 'white',
-    line: 6,
-  },
 
   // West
   {
@@ -202,14 +194,14 @@ const routes: Route[] = [
     color: 'red',
     line: 10,
   },
-  { id: 'garbsen-stoecken-black-4', a: 'garbsen', b: 'stoecken', length: 4, color: 'black', line: 4 },
+  { id: 'garbsen-stoecken-black-5', a: 'garbsen', b: 'stoecken', length: 5, color: 'black', line: 4 },
   {
-    id: 'linden-wettbergen-blue-4',
-    a: 'linden',
-    b: 'wettbergen',
-    length: 4,
-    color: 'blue',
-    line: 7,
+    id: 'stoecken-steintor-red-5',
+    a: 'stoecken',
+    b: 'steintor',
+    length: 5,
+    color: 'red',
+    line: 5,
   },
   { id: 'linden-empelde-white-4', a: 'linden', b: 'empelde', length: 4, color: 'white', line: 9 },
   {
@@ -221,10 +213,10 @@ const routes: Route[] = [
     line: 9,
   },
   {
-    id: 'empelde-wettbergen-orange-2',
-    a: 'empelde',
+    id: 'allerweg-wettbergen-orange-4',
+    a: 'allerweg',
     b: 'wettbergen',
-    length: 2,
+    length: 4,
     color: 'orange',
     line: 7,
   },
@@ -260,7 +252,14 @@ const routes: Route[] = [
   },
   { id: 'aegi-zoo-gray-4', a: 'aegi', b: 'zoo', length: 4, color: 'gray', line: 11 },
   { id: 'zoo-anderten-blue-4', a: 'zoo', b: 'anderten', length: 4, color: 'blue', line: 5 },
-  { id: 'zoo-roderbruch-white-3', a: 'zoo', b: 'roderbruch', length: 3, color: 'white', line: 4 },
+  {
+    id: 'med_hochschule-roderbruch-white-6',
+    a: 'med_hochschule',
+    b: 'roderbruch',
+    length: 6,
+    color: 'white',
+    line: 4,
+  },
   { id: 'aegi-messe_ost-yellow-5', a: 'aegi', b: 'messe_ost', length: 5, color: 'yellow', line: 6 },
   {
     id: 'messe_ost-anderten-green-3',
