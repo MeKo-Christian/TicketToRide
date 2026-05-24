@@ -89,7 +89,7 @@ describe('canDrawFaceUp', () => {
 describe('canClaimRoute', () => {
   it('denies if not enough train cars', () => {
     const s = gameInPlay();
-    const route = hannoverMap.routes.find((r) => r.length === 6)!;
+    const route = hannoverMap.routes.find((r) => r.length >= 4)!;
     const broke = {
       ...s,
       players: s.players.map((p) => (p.id === s.turn ? { ...p, trainCars: 3 } : p)),

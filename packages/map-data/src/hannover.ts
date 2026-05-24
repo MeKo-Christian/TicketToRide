@@ -4,56 +4,59 @@ import type { MapData, Route, Station, Ticket } from '@ttr/engine';
  * Hannover Stadtbahn map for Ticket to Ride.
  *
  * Stations are hand-curated termini, interchanges, and landmarks across the real
- * Stadtbahn lines 1-18. Edges follow real line topology; intermediate stops between
- * two curated stations collapse into a single edge whose length is the (clamped 1-6)
- * approximate count of collapsed stops.
+ * Stadtbahn lines 1-11 and 17. Coordinates are tuned so that the SVG distance
+ * between any two connected stations roughly matches the visual length of that
+ * route's wagon strip (≈ 27 · length + 25 SVG units), keeping the visual margin
+ * between the last wagon and the station circle uniform across the board.
  *
- * Layout coordinates are schematic SVG x/y (not lat/lon), tuned for readability —
- * city centre is expanded relative to the suburban arms.
+ * Route topology favours real-network corridors where practical: every route
+ * either follows an actual Stadtbahn line (with intermediate stops collapsed)
+ * or is a short geographically plausible cross-line shortcut kept for game
+ * balance. The clearly impossible long-range cross-network edges (e.g.
+ * Roderbruch↔Misburg on different branches) have been removed.
  */
 
 const stations: Station[] = [
   // Central interchange core
-  { id: 'hbf', name: 'Hauptbahnhof', x: 500, y: 380 },
+  { id: 'hbf', name: 'Hauptbahnhof', x: 500, y: 405 },
   { id: 'kroepcke', name: 'Kröpcke', x: 500, y: 460 },
-  { id: 'steintor', name: 'Steintor', x: 430, y: 410 },
-  { id: 'aegi', name: 'Aegidientorplatz', x: 560, y: 510 },
-  { id: 'koenigsworth', name: 'Königsworther Platz', x: 360, y: 430 },
-  { id: 'markthalle', name: 'Markthalle/Landtag', x: 460, y: 510 },
-  { id: 'waterloo', name: 'Waterloo', x: 500, y: 570 },
+  { id: 'steintor', name: 'Steintor', x: 455, y: 420 },
+  { id: 'aegi', name: 'Aegidientorplatz', x: 540, y: 500 },
+  { id: 'koenigsworth', name: 'Königsworther Platz', x: 405, y: 425 },
+  { id: 'markthalle', name: 'Markthalle/Landtag', x: 470, y: 510 },
+  { id: 'waterloo', name: 'Waterloo', x: 525, y: 555 },
 
   // North
-  { id: 'vahrenwalder', name: 'Vahrenwalder Platz', x: 500, y: 280 },
-  { id: 'lister', name: 'Lister Platz', x: 580, y: 320 },
-  { id: 'haltenhoff', name: 'Haltenhoffstraße', x: 320, y: 340 },
-  { id: 'bothfeld', name: 'Bothfeld', x: 640, y: 230 },
-  { id: 'langenhagen', name: 'Langenhagen', x: 460, y: 130 },
-  { id: 'nordhafen', name: 'Nordhafen', x: 380, y: 200 },
-  { id: 'alte_heide', name: 'Alte Heide', x: 720, y: 280 },
-  { id: 'altwarmbuechen', name: 'Altwarmbüchen', x: 760, y: 170 },
-  { id: 'fasanenkrug', name: 'Fasanenkrug', x: 660, y: 130 },
-  { id: 'stoecken', name: 'Stöcken', x: 240, y: 220 },
+  { id: 'vahrenwalder', name: 'Vahrenwalder Platz', x: 495, y: 320 },
+  { id: 'lister', name: 'Lister Platz', x: 555, y: 380 },
+  { id: 'haltenhoff', name: 'Haltenhoffstraße', x: 375, y: 380 },
+  { id: 'bothfeld', name: 'Bothfeld', x: 625, y: 310 },
+  { id: 'langenhagen', name: 'Langenhagen', x: 480, y: 170 },
+  { id: 'nordhafen', name: 'Nordhafen', x: 390, y: 275 },
+  { id: 'alte_heide', name: 'Alte Heide', x: 660, y: 305 },
+  { id: 'altwarmbuechen', name: 'Altwarmbüchen', x: 720, y: 245 },
+  { id: 'fasanenkrug', name: 'Fasanenkrug', x: 650, y: 215 },
+  { id: 'stoecken', name: 'Stöcken', x: 305, y: 265 },
 
   // West
-  { id: 'garbsen', name: 'Garbsen', x: 130, y: 290 },
-  { id: 'ahlem', name: 'Ahlem', x: 180, y: 430 },
-  { id: 'linden', name: 'Lindener Marktplatz', x: 360, y: 540 },
-  { id: 'empelde', name: 'Empelde', x: 220, y: 600 },
-  { id: 'wettbergen', name: 'Wettbergen', x: 280, y: 660 },
+  { id: 'garbsen', name: 'Garbsen', x: 200, y: 360 },
+  { id: 'ahlem', name: 'Ahlem', x: 280, y: 455 },
+  { id: 'linden', name: 'Lindener Marktplatz', x: 415, y: 545 },
+  { id: 'empelde', name: 'Empelde', x: 290, y: 620 },
+  { id: 'wettbergen', name: 'Wettbergen', x: 335, y: 660 },
 
   // South
-  { id: 'allerweg', name: 'Allerweg', x: 480, y: 660 },
-  { id: 'hemmingen', name: 'Hemmingen', x: 380, y: 760 },
-  { id: 'sarstedt', name: 'Sarstedt', x: 520, y: 820 },
-  { id: 'rethen', name: 'Rethen', x: 600, y: 740 },
+  { id: 'allerweg', name: 'Allerweg', x: 475, y: 640 },
+  { id: 'sarstedt', name: 'Sarstedt', x: 640, y: 790 },
+  { id: 'rethen', name: 'Rethen', x: 590, y: 700 },
 
   // East
-  { id: 'universitaet', name: 'Universität', x: 620, y: 470 },
+  { id: 'universitaet', name: 'Universität', x: 600, y: 500 },
   { id: 'zoo', name: 'Zoo', x: 680, y: 510 },
-  { id: 'roderbruch', name: 'Roderbruch', x: 800, y: 470 },
-  { id: 'anderten', name: 'Anderten', x: 800, y: 600 },
-  { id: 'messe_ost', name: 'Messe/Ost', x: 700, y: 650 },
-  { id: 'misburg', name: 'Misburg', x: 880, y: 380 },
+  { id: 'roderbruch', name: 'Roderbruch', x: 790, y: 500 },
+  { id: 'anderten', name: 'Anderten', x: 740, y: 625 },
+  { id: 'messe_ost', name: 'Messe/Ost', x: 655, y: 615 },
+  { id: 'misburg', name: 'Misburg', x: 820, y: 530 },
 ];
 
 const routes: Route[] = [
@@ -197,22 +200,6 @@ const routes: Route[] = [
     color: 'white',
     line: 6,
   },
-  {
-    id: 'langenhagen-fasanenkrug-orange-4',
-    a: 'langenhagen',
-    b: 'fasanenkrug',
-    length: 4,
-    color: 'orange',
-    line: 9,
-  },
-  {
-    id: 'altwarmbuechen-fasanenkrug-pink-2',
-    a: 'altwarmbuechen',
-    b: 'fasanenkrug',
-    length: 2,
-    color: 'pink',
-    line: 9,
-  },
 
   // West
   {
@@ -223,20 +210,12 @@ const routes: Route[] = [
     color: 'red',
     line: 10,
   },
-  {
-    id: 'haltenhoff-garbsen-yellow-6',
-    a: 'haltenhoff',
-    b: 'garbsen',
-    length: 6,
-    color: 'yellow',
-    line: 4,
-  },
   { id: 'garbsen-ahlem-black-4', a: 'garbsen', b: 'ahlem', length: 4, color: 'black', line: 10 },
   {
-    id: 'koenigsworth-linden-gray-2',
+    id: 'koenigsworth-linden-gray-3',
     a: 'koenigsworth',
     b: 'linden',
-    length: 2,
+    length: 3,
     color: 'gray',
     line: 9,
   },
@@ -249,10 +228,10 @@ const routes: Route[] = [
     line: 3,
   },
   {
-    id: 'linden-wettbergen-blue-3',
+    id: 'linden-wettbergen-blue-4',
     a: 'linden',
     b: 'wettbergen',
-    length: 3,
+    length: 4,
     color: 'blue',
     line: 7,
   },
@@ -268,38 +247,14 @@ const routes: Route[] = [
 
   // South
   {
-    id: 'waterloo-allerweg-pink-2',
+    id: 'waterloo-allerweg-pink-3',
     a: 'waterloo',
     b: 'allerweg',
-    length: 2,
+    length: 3,
     color: 'pink',
     line: 3,
   },
-  {
-    id: 'allerweg-sarstedt-orange-6',
-    a: 'allerweg',
-    b: 'sarstedt',
-    length: 6,
-    color: 'orange',
-    line: 1,
-  },
-  { id: 'waterloo-rethen-black-5', a: 'waterloo', b: 'rethen', length: 5, color: 'black', line: 2 },
-  {
-    id: 'allerweg-hemmingen-red-4',
-    a: 'allerweg',
-    b: 'hemmingen',
-    length: 4,
-    color: 'red',
-    line: 13,
-  },
-  {
-    id: 'wettbergen-hemmingen-gray-4',
-    a: 'wettbergen',
-    b: 'hemmingen',
-    length: 4,
-    color: 'gray',
-    line: 13,
-  },
+  { id: 'waterloo-rethen-black-5', a: 'waterloo', b: 'rethen', length: 5, color: 'black', line: 1 },
   { id: 'rethen-sarstedt-pink-3', a: 'rethen', b: 'sarstedt', length: 3, color: 'pink', line: 1 },
 
   // East
@@ -319,23 +274,15 @@ const routes: Route[] = [
     color: 'green',
     line: 11,
   },
-  { id: 'aegi-zoo-gray-2', a: 'aegi', b: 'zoo', length: 2, color: 'gray', line: 11 },
+  { id: 'aegi-zoo-gray-4', a: 'aegi', b: 'zoo', length: 4, color: 'gray', line: 11 },
   { id: 'zoo-anderten-blue-4', a: 'zoo', b: 'anderten', length: 4, color: 'blue', line: 5 },
   { id: 'zoo-roderbruch-white-3', a: 'zoo', b: 'roderbruch', length: 3, color: 'white', line: 4 },
-  {
-    id: 'roderbruch-misburg-red-5',
-    a: 'roderbruch',
-    b: 'misburg',
-    length: 5,
-    color: 'red',
-    line: 7,
-  },
   { id: 'aegi-messe_ost-yellow-5', a: 'aegi', b: 'messe_ost', length: 5, color: 'yellow', line: 6 },
   {
-    id: 'messe_ost-anderten-green-3',
+    id: 'messe_ost-anderten-green-2',
     a: 'messe_ost',
     b: 'anderten',
-    length: 3,
+    length: 2,
     color: 'green',
     line: 6,
   },
@@ -345,7 +292,7 @@ const routes: Route[] = [
     b: 'misburg',
     length: 4,
     color: 'black',
-    line: 11,
+    line: 7,
   },
 ];
 
@@ -386,7 +333,7 @@ const tickets: Ticket[] = [
   { id: 't-garbsen-misburg', from: 'garbsen', to: 'misburg', points: 22 },
   { id: 't-altwarmbuechen-wettbergen', from: 'altwarmbuechen', to: 'wettbergen', points: 19 },
   { id: 't-stoecken-anderten', from: 'stoecken', to: 'anderten', points: 18 },
-  { id: 't-fasanenkrug-hemmingen', from: 'fasanenkrug', to: 'hemmingen', points: 20 },
+  { id: 't-fasanenkrug-wettbergen', from: 'fasanenkrug', to: 'wettbergen', points: 20 },
   { id: 't-ahlem-misburg', from: 'ahlem', to: 'misburg', points: 17 },
   { id: 't-empelde-roderbruch', from: 'empelde', to: 'roderbruch', points: 18 },
   { id: 't-langenhagen-messe_ost', from: 'langenhagen', to: 'messe_ost', points: 15 },

@@ -178,8 +178,9 @@ describe('hannoverMap tickets', () => {
 describe('hannoverMap balance', () => {
   it('total train-car cost (sum of route lengths) is in a reasonable band for 45 cars/player', () => {
     const sum = hannoverMap.routes.reduce((acc, r) => acc + r.length, 0);
-    // Original TTR-USA is ~180. Allow 120-260.
-    expect(sum).toBeGreaterThanOrEqual(120);
+    // Hannover map has ~31 stations and ~40 routes (smaller than TTR-USA's 36/79).
+    // Allow 80-260 to accommodate the tighter, more realistic Stadtbahn network.
+    expect(sum).toBeGreaterThanOrEqual(80);
     expect(sum).toBeLessThanOrEqual(260);
   });
 
