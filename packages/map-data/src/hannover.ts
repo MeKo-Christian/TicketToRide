@@ -17,46 +17,46 @@ import type { MapData, Route, Station, Ticket } from '@ttr/engine';
  */
 
 const stations: Station[] = [
-  // Central interchange core
-  { id: 'hbf', name: 'Hauptbahnhof', x: 500, y: 405 },
+  // Central interchange core (fish-eye expanded for readability)
+  { id: 'hbf', name: 'Hauptbahnhof', x: 500, y: 380 },
   { id: 'kroepcke', name: 'Kröpcke', x: 500, y: 460 },
-  { id: 'steintor', name: 'Steintor', x: 455, y: 420 },
-  { id: 'aegi', name: 'Aegidientorplatz', x: 540, y: 500 },
-  { id: 'koenigsworth', name: 'Königsworther Platz', x: 405, y: 425 },
-  { id: 'markthalle', name: 'Markthalle/Landtag', x: 470, y: 510 },
-  { id: 'waterloo', name: 'Waterloo', x: 525, y: 555 },
+  { id: 'steintor', name: 'Steintor', x: 430, y: 415 },
+  { id: 'aegi', name: 'Aegidientorplatz', x: 560, y: 515 },
+  { id: 'koenigsworth', name: 'Königsworther Platz', x: 350, y: 425 },
+  { id: 'markthalle', name: 'Markthalle/Landtag', x: 465, y: 530 },
+  { id: 'waterloo', name: 'Waterloo', x: 550, y: 590 },
 
   // North
-  { id: 'vahrenwalder', name: 'Vahrenwalder Platz', x: 495, y: 320 },
-  { id: 'lister', name: 'Lister Platz', x: 555, y: 380 },
-  { id: 'haltenhoff', name: 'Haltenhoffstraße', x: 375, y: 380 },
-  { id: 'bothfeld', name: 'Bothfeld', x: 625, y: 310 },
-  { id: 'langenhagen', name: 'Langenhagen', x: 480, y: 170 },
-  { id: 'nordhafen', name: 'Nordhafen', x: 390, y: 275 },
-  { id: 'alte_heide', name: 'Alte Heide', x: 660, y: 305 },
-  { id: 'altwarmbuechen', name: 'Altwarmbüchen', x: 720, y: 245 },
-  { id: 'fasanenkrug', name: 'Fasanenkrug', x: 650, y: 215 },
-  { id: 'stoecken', name: 'Stöcken', x: 305, y: 265 },
+  { id: 'vahrenwalder', name: 'Vahrenwalder Platz', x: 500, y: 305 },
+  { id: 'lister', name: 'Lister Platz', x: 580, y: 370 },
+  { id: 'haltenhoff', name: 'Haltenhoffstraße', x: 320, y: 360 },
+  { id: 'bothfeld', name: 'Bothfeld', x: 635, y: 285 },
+  { id: 'langenhagen', name: 'Langenhagen', x: 485, y: 145 },
+  { id: 'nordhafen', name: 'Nordhafen', x: 375, y: 250 },
+  { id: 'alte_heide', name: 'Alte Heide', x: 710, y: 320 },
+  { id: 'altwarmbuechen', name: 'Altwarmbüchen', x: 745, y: 220 },
+  { id: 'fasanenkrug', name: 'Fasanenkrug', x: 665, y: 195 },
+  { id: 'stoecken', name: 'Stöcken', x: 290, y: 250 },
 
   // West
-  { id: 'garbsen', name: 'Garbsen', x: 200, y: 360 },
-  { id: 'ahlem', name: 'Ahlem', x: 280, y: 455 },
-  { id: 'linden', name: 'Lindener Marktplatz', x: 415, y: 545 },
-  { id: 'empelde', name: 'Empelde', x: 290, y: 620 },
-  { id: 'wettbergen', name: 'Wettbergen', x: 335, y: 660 },
+  { id: 'garbsen', name: 'Garbsen', x: 180, y: 320 },
+  { id: 'ahlem', name: 'Ahlem', x: 230, y: 510 },
+  { id: 'linden', name: 'Lindener Marktplatz', x: 430, y: 595 },
+  { id: 'empelde', name: 'Empelde', x: 305, y: 670 },
+  { id: 'wettbergen', name: 'Wettbergen', x: 350, y: 695 },
 
   // South
-  { id: 'allerweg', name: 'Allerweg', x: 475, y: 640 },
-  { id: 'sarstedt', name: 'Sarstedt', x: 640, y: 790 },
-  { id: 'rethen', name: 'Rethen', x: 590, y: 700 },
+  { id: 'allerweg', name: 'Allerweg', x: 485, y: 660 },
+  { id: 'sarstedt', name: 'Sarstedt', x: 685, y: 815 },
+  { id: 'rethen', name: 'Rethen', x: 620, y: 730 },
 
-  // East
-  { id: 'med_hochschule', name: 'Medizinische Hochschule', x: 600, y: 500 },
-  { id: 'zoo', name: 'Zoo', x: 680, y: 510 },
-  { id: 'roderbruch', name: 'Roderbruch', x: 790, y: 500 },
-  { id: 'anderten', name: 'Anderten', x: 740, y: 625 },
-  { id: 'messe_ost', name: 'Messe/Ost', x: 655, y: 615 },
-  { id: 'misburg', name: 'Misburg', x: 820, y: 530 },
+  // East — Medizinische Hochschule offset off the aegi↔zoo line so the L4 strip doesn't pass through it
+  { id: 'med_hochschule', name: 'Medizinische Hochschule', x: 605, y: 485 },
+  { id: 'zoo', name: 'Zoo', x: 700, y: 525 },
+  { id: 'roderbruch', name: 'Roderbruch', x: 815, y: 520 },
+  { id: 'anderten', name: 'Anderten', x: 760, y: 660 },
+  { id: 'messe_ost', name: 'Messe/Ost', x: 645, y: 640 },
+  { id: 'misburg', name: 'Misburg', x: 870, y: 580 },
 ];
 
 const routes: Route[] = [
@@ -124,10 +124,10 @@ const routes: Route[] = [
     line: 3,
   },
   {
-    id: 'markthalle-waterloo-yellow-2',
+    id: 'markthalle-waterloo-yellow-3',
     a: 'markthalle',
     b: 'waterloo',
-    length: 2,
+    length: 3,
     color: 'yellow',
     line: 17,
   },
@@ -177,10 +177,10 @@ const routes: Route[] = [
     line: 9,
   },
   {
-    id: 'haltenhoff-steintor-yellow-2',
+    id: 'haltenhoff-steintor-yellow-3',
     a: 'haltenhoff',
     b: 'steintor',
-    length: 2,
+    length: 3,
     color: 'yellow',
     line: 11,
   },
@@ -263,10 +263,10 @@ const routes: Route[] = [
   { id: 'zoo-roderbruch-white-3', a: 'zoo', b: 'roderbruch', length: 3, color: 'white', line: 4 },
   { id: 'aegi-messe_ost-yellow-5', a: 'aegi', b: 'messe_ost', length: 5, color: 'yellow', line: 6 },
   {
-    id: 'messe_ost-anderten-green-2',
+    id: 'messe_ost-anderten-green-3',
     a: 'messe_ost',
     b: 'anderten',
-    length: 2,
+    length: 3,
     color: 'green',
     line: 6,
   },
