@@ -211,11 +211,13 @@ export function Board({
                         fill={ownerHex}
                         stroke="#f8fafc"
                         strokeWidth={1.4}
-                        transform={`rotate(${angle} ${cx} ${cy})`}
                         filter="url(#carShadow)"
                         pointerEvents="none"
-                        initial={{ opacity: 0, scale: 0.6 }}
-                        animate={{ opacity: 1, scale: 1 }}
+                        // framer-motion drives transform via inline style, which overrides any
+                        // SVG transform attribute — so the rotation must live in the animation too.
+                        style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+                        initial={{ opacity: 0, scale: 0.6, rotate: angle }}
+                        animate={{ opacity: 1, scale: 1, rotate: angle }}
                         transition={{ duration: 0.32, delay: i * 0.06 }}
                       />
                     )}
