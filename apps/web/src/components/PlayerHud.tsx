@@ -116,9 +116,7 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
                       )}
                       {from?.name} → {to?.name}
                     </span>
-                    <span
-                      className={`font-medium ${done ? 'text-emerald-300' : 'text-amber-300'}`}
-                    >
+                    <span className={`font-medium ${done ? 'text-emerald-300' : 'text-amber-300'}`}>
                       {t.points}
                     </span>
                   </li>

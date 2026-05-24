@@ -26,10 +26,7 @@ export function Confetti({ colors, count = 80, durationSeconds = 3.2 }: Confetti
   if (reduce) return null;
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 overflow-hidden z-50"
-    >
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 overflow-hidden z-50">
       {pieces.map((p) => (
         <motion.span
           key={p.id}

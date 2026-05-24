@@ -23,7 +23,7 @@ const stations: Station[] = [
   { id: "steintor", name: "Steintor", x: 430, y: 415 },
   { id: "aegi", name: "Aegidientorplatz", x: 560, y: 515 },
   { id: "koenigsworth", name: "Königsworther Platz", x: 350, y: 425 },
-  { id: "waterloo", name: "Waterloo", x: 470, y: 600 },
+  { id: "waterloo", name: "Waterloo", x: 475, y: 580 },
 
   // North
   { id: "vahrenwalder", name: "Vahrenwalder Platz", x: 500, y: 305 },
