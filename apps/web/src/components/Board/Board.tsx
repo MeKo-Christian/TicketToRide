@@ -109,7 +109,35 @@ export function Board({
         onPointerCancel={onPointerUp}
         style={{ cursor: dragRef.current ? 'grabbing' : 'grab' }}
       >
-        <rect x={-80} y={-80} width={1160} height={1040} fill="#0f172a" />
+        <defs>
+          <radialGradient id="boardBg" cx="50%" cy="45%" r="70%">
+            <stop offset="0%" stopColor="#334155" />
+            <stop offset="60%" stopColor="#1e293b" />
+            <stop offset="100%" stopColor="#0b1220" />
+          </radialGradient>
+          <pattern id="boardGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+            <path
+              d="M 60 0 L 0 0 0 60"
+              fill="none"
+              stroke="#475569"
+              strokeWidth={0.5}
+              opacity={0.35}
+            />
+          </pattern>
+          <filter id="carShadow" x="-20%" y="-40%" width="140%" height="180%">
+            <feDropShadow dx="0" dy="1" stdDeviation="1.2" floodColor="#000" floodOpacity="0.55" />
+          </filter>
+        </defs>
+
+        <rect x={-80} y={-80} width={1160} height={1040} fill="url(#boardBg)" />
+        <rect
+          x={-80}
+          y={-80}
+          width={1160}
+          height={1040}
+          fill="url(#boardGrid)"
+          pointerEvents="none"
+        />
 
         {/* Routes */}
         {state.map.routes.map((route) => {
@@ -120,9 +148,11 @@ export function Board({
           const owner = ownership.get(route.id);
           const isSelected = selectedRouteId === route.id;
           const claimable = canClaimRoute(state, viewerId, route.id).allowed;
-          const stroke = owner ? (ownerColor.get(owner) ?? '#e2e8f0') : routeStrokeHex(route.color);
-          const opacity = owner ? 1 : claimable ? 1 : 0.55;
-          const strokeWidth = isSelected ? 14 : 11;
+          const baseColor = owner
+            ? (ownerColor.get(owner) ?? '#e2e8f0')
+            : routeStrokeHex(route.color);
+          const dim = !owner && !claimable;
+          const lineWidth = isSelected ? 14 : 11;
           const ariaLabel = `Route ${route.color} length ${route.length} from ${stationById.get(route.a)?.name ?? route.a} to ${stationById.get(route.b)?.name ?? route.b}${owner ? `, owned by ${state.players.find((p) => p.id === owner)?.name ?? owner}` : claimable ? ', claimable' : ''}`;
 
           return (
@@ -148,22 +178,64 @@ export function Board({
                   }
                 }}
               />
-              {segs.map((s, i) => (
-                <motion.line
-                  key={i}
-                  x1={s.x1}
-                  y1={s.y1}
-                  x2={s.x2}
-                  y2={s.y2}
-                  stroke={stroke}
-                  strokeWidth={strokeWidth}
-                  strokeLinecap="round"
-                  pointerEvents="none"
-                  initial={owner ? { opacity: 0, pathLength: 0 } : false}
-                  animate={{ opacity, pathLength: 1 }}
-                  transition={{ duration: 0.4, delay: owner ? i * 0.06 : 0 }}
-                />
-              ))}
+              {segs.map((s, i) => {
+                if (owner) {
+                  const angle = (Math.atan2(s.y2 - s.y1, s.x2 - s.x1) * 180) / Math.PI;
+                  const length = Math.hypot(s.x2 - s.x1, s.y2 - s.y1);
+                  const cx = (s.x1 + s.x2) / 2;
+                  const cy = (s.y1 + s.y2) / 2;
+                  const h = isSelected ? 16 : 14;
+                  return (
+                    <motion.rect
+                      key={i}
+                      x={cx - length / 2}
+                      y={cy - h / 2}
+                      width={length}
+                      height={h}
+                      rx={3}
+                      ry={3}
+                      fill={baseColor}
+                      stroke="#f8fafc"
+                      strokeWidth={1.6}
+                      transform={`rotate(${angle} ${cx} ${cy})`}
+                      filter="url(#carShadow)"
+                      pointerEvents="none"
+                      initial={{ opacity: 0, scale: 0.6 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.32, delay: i * 0.06 }}
+                    />
+                  );
+                }
+                return (
+                  <g key={i}>
+                    <line
+                      x1={s.x1}
+                      y1={s.y1}
+                      x2={s.x2}
+                      y2={s.y2}
+                      stroke="#0b1220"
+                      strokeWidth={lineWidth + 4}
+                      strokeLinecap="round"
+                      opacity={dim ? 0.35 : 0.6}
+                      pointerEvents="none"
+                    />
+                    <motion.line
+                      x1={s.x1}
+                      y1={s.y1}
+                      x2={s.x2}
+                      y2={s.y2}
+                      stroke={baseColor}
+                      strokeWidth={lineWidth}
+                      strokeLinecap="round"
+                      strokeDasharray={`${Math.max(3, lineWidth * 0.7)} ${Math.max(3, lineWidth * 0.5)}`}
+                      pointerEvents="none"
+                      initial={false}
+                      animate={{ opacity: dim ? 0.4 : 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </g>
+                );
+              })}
               {isSelected && (
                 <line
                   x1={a.x}
@@ -173,7 +245,7 @@ export function Board({
                   stroke="#fff"
                   strokeWidth={2}
                   strokeDasharray="4 4"
-                  opacity={0.6}
+                  opacity={0.7}
                   pointerEvents="none"
                 />
               )}
@@ -193,14 +265,19 @@ export function Board({
                 fill="#0f172a"
                 stroke={isHi ? '#facc15' : '#cbd5e1'}
                 strokeWidth={isHi ? 4 : 2}
+                filter="url(#carShadow)"
               />
               <text
                 x={s.x}
                 y={s.y - 16}
                 textAnchor="middle"
-                className="fill-slate-100"
                 fontSize={11}
-                fontWeight={isHi ? 700 : 500}
+                fontWeight={isHi ? 700 : 600}
+                stroke="#0b1220"
+                strokeWidth={3}
+                strokeLinejoin="round"
+                paintOrder="stroke"
+                fill="#f8fafc"
                 pointerEvents="none"
               >
                 {s.name}

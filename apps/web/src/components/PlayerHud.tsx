@@ -15,7 +15,7 @@ export function PlayerHud({ state, player, highlightTicketEndpoints }: PlayerHud
   const isActive = state.turn === player.id;
 
   return (
-    <div className="bg-slate-900 border-t border-slate-800 px-4 py-3">
+    <div className="flex-shrink-0 bg-slate-900 border-t border-slate-800 px-4 py-3">
       <div className="flex flex-col md:flex-row md:items-start gap-3 md:gap-6">
         <div className="flex-shrink-0 space-y-1">
           <div className="flex items-center gap-2">

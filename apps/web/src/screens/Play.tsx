@@ -66,10 +66,10 @@ export function Play({ state }: PlayProps) {
   if (!viewer) return null;
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-[100dvh] flex flex-col overflow-hidden">
       <OpponentBar state={state} viewerId={viewer.id} />
-      <div className="flex-1 flex flex-col md:flex-row min-h-0">
-        <div className="flex-1 relative min-h-[300px]">
+      <div className="flex-1 flex flex-col md:flex-row min-h-0 overflow-hidden">
+        <div className="flex-1 relative min-h-0 overflow-hidden">
           <Board
             state={state}
             viewerId={viewer.id}

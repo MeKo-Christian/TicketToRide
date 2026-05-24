@@ -12,7 +12,7 @@ export function OpponentBar({ state, viewerId }: OpponentBarProps) {
     Object.values(p.hand).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="bg-slate-900 border-b border-slate-800 px-4 py-2 flex gap-3 items-center text-xs overflow-x-auto">
+    <div className="flex-shrink-0 bg-slate-900 border-b border-slate-800 px-4 py-2 flex gap-3 items-center text-xs overflow-x-auto">
       <span className="text-slate-400 mr-1 flex-shrink-0">Opponents</span>
       {others.map((p) => {
         const active = state.turn === p.id;

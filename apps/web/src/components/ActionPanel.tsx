@@ -29,7 +29,7 @@ export function ActionPanel({ state, viewerId, selectedRouteId, onOpenClaim }: A
     : null;
 
   return (
-    <aside className="w-full md:w-72 bg-slate-900 border-t md:border-t-0 md:border-l border-slate-800 p-4 flex flex-col gap-4 overflow-y-auto">
+    <aside className="w-full md:w-72 max-h-[40vh] md:max-h-none min-h-0 bg-slate-900 border-t md:border-t-0 md:border-l border-slate-800 p-4 flex flex-col gap-4 overflow-y-auto flex-shrink-0">
       <header>
         <h2 className="font-semibold">Your turn</h2>
         <p className="text-xs text-slate-400">
